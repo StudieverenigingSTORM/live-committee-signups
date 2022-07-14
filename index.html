@@ -6,20 +6,44 @@
     <title>Live Committee Signups</title>
     <script src='https://d3js.org/d3.v7.min.js' charset='utf-8'></script>
     <style>
-        rect {
-            fill: blue;
+        body {
+            font-family: sans-serif;
+            margin: 0px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        body div {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0%);
+        }
+
+        .datum {
+            fill: darkcyan;
+        }
+
+        .max {
+            filter: drop-shadow(0px 0px 15px rgb(142, 242, 255));
         }
     </style>
+    <link rel='stylesheet' href='style.css'>
 </head>
 
 <body>
-    <h1>Live Committee Signups</h1>
-    <svg id='chart' width='500' height='500'></svg>
+    <div>
+        <h1>Live Committee Signups</h1>
+        <div id='chart'></div>
+    </div>
     <script>
         'use strict';
 
         const apiEndpoint = 'http://0.0.0.0:8080/mock-api.json';
-        const pollInterval = 1000;
+        const pollInterval = 5000;
+
+        window.onresize = function () {
+            location.reload();
+        };
 
         function getData() {
             let headers = new Headers();
@@ -34,35 +58,30 @@
                     return res.data;
                 })
                 .then(data => Object.keys(data).map(k => { return { key: k, value: data[k] }; }))
-                .then(data => data.sort((a, b) => b.value - a.value))
+                .then(data => data.sort((a, b) => a.key.localeCompare(b.key)))
                 .catch(err => console.log(err));
         }
 
-        // set the dimensions and margins of the ^aph
-        var margin = { top: 30, right: 30, bottom: 70, left: 60 },
-            width = 460 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+        const margin = { top: 30, right: 30, bottom: 120, left: 60 },
+            width = window.innerWidth - margin.left - margin.right,
+            height = window.innerHeight - margin.top - margin.bottom;
 
-        // append the svg object to the body of the page
-        var svg = d3.select('#chart')
+        const svg = d3.select('#chart')
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
             .append('g')
-            .attr('transform',
-                'translate(' + margin.left + ',' + margin.top + ')');
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        // X axis
         var x = d3.scaleBand()
             .range([0, width])
             .domain([0, 100])
             .padding(0.2);
         svg.append('g')
             .attr('id', 'xaxis')
-            .attr('transform', 'translate(0,' + height + ')')
+            .attr('transform', `translate(0, ${height})`)
             .call(d3.axisBottom(x))
 
-        // Add Y axis
         var y = d3.scaleLinear()
             .domain([0, 100])
             .range([height, 0]);
@@ -70,23 +89,20 @@
             .attr('id', 'yaxis')
             .call(d3.axisLeft(y));
 
-        // A function that create / update the plot for a given variable:
         function update(data) {
             if (data === undefined) {
                 return;
             }
 
-            // update y axis domain
-            y.domain([0, d3.max(data, function (d) { return d.value; })]);
-            // Update y ticks
+            const maxValue = d3.max(data, function (d) { return d.value; });
+
+            y.domain([0, maxValue]);
             svg.select('#yaxis')
                 .transition()
                 .duration(1000)
                 .call(d3.axisLeft(y));
 
-            // Update x axis domain
             x.domain(data.map(function (d) { return d.key; }));
-            // Update x ticks
             svg.select('#xaxis')
                 .call(d3.axisBottom(x));
 
@@ -99,10 +115,17 @@
                 .merge(u)
                 .transition()
                 .duration(1000)
-                .attr('x', function (d) { return x(d.key); })
-                .attr('y', function (d) { return y(d.value); })
+                .attr('x', d => x(d.key))
+                .attr('y', d => y(d.value))
                 .attr('width', x.bandwidth())
-                .attr('height', function (d) { return height - y(d.value); })
+                .attr('height', d => height - y(d.value))
+                .attr('class', d => {
+                    let clazz = 'datum ' + d.key;
+                    if (d.value === maxValue) {
+                        clazz += ' max';
+                    }
+                    return clazz;
+                });
         }
 
         getData().then(update);

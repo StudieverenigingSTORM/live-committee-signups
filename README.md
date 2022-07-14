@@ -4,9 +4,8 @@ The signup process is carried out using Google Forms.
 
 # Components
 * Google Apps Script (`api.gs`)
-* Static web frontend (`index.html`)
+* Static web frontend (`index.html`, `style.css`)
 
-# Local Testing
-(⚠ Subject to change)  
+# Local Testing  
 Run a local static HTTP server using `python3 -m http.server 8080`.
 The data is fetched from the file `mock-api.json`.

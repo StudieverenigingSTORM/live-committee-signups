@@ -2,7 +2,9 @@
     "status": "success",
     "data": {
         "foo": 10,
-        "bar": 20,
+        "bar": 18,
+        "bar1": 21,
+        "bar2": 20,
         "foobar": 5
     }
 }
