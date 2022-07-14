@@ -42,7 +42,7 @@
     <script>
         'use strict';
 
-        const apiEndpoint = window.location.origin + '/mock-api.json';
+        const apiEndpoint = window.location.href.split('/').slice(0, -1).join('/') + '/mock-api.json';
         const pollInterval = 5000;
         const transitionTime = 1000;
 
