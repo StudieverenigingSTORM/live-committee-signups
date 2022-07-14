@@ -26,6 +26,10 @@
         .max {
             filter: drop-shadow(0px 0px 15px rgb(142, 242, 255));
         }
+
+        #chart text {
+            font-size: xx-large;
+        }
     </style>
     <link rel='stylesheet' href='style.css'>
 </head>
@@ -38,8 +42,13 @@
     <script>
         'use strict';
 
-        const apiEndpoint = 'http://0.0.0.0:8080/mock-api.json';
+        const apiEndpoint = window.location.origin + '/mock-api.json';
         const pollInterval = 5000;
+        const transitionTime = 1000;
+
+        const margin = { top: 30, right: 30, bottom: 150, left: 60 },
+            width = window.innerWidth - margin.left - margin.right,
+            height = window.innerHeight - margin.top - margin.bottom;
 
         window.onresize = function () {
             location.reload();
@@ -62,10 +71,6 @@
                 .catch(err => console.log(err));
         }
 
-        const margin = { top: 30, right: 30, bottom: 120, left: 60 },
-            width = window.innerWidth - margin.left - margin.right,
-            height = window.innerHeight - margin.top - margin.bottom;
-
         const svg = d3.select('#chart')
             .append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -73,7 +78,7 @@
             .append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        var x = d3.scaleBand()
+        const x = d3.scaleBand()
             .range([0, width])
             .domain([0, 100])
             .padding(0.2);
@@ -82,7 +87,7 @@
             .attr('transform', `translate(0, ${height})`)
             .call(d3.axisBottom(x))
 
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain([0, 100])
             .range([height, 0]);
         svg.append('g')
@@ -106,15 +111,14 @@
             svg.select('#xaxis')
                 .call(d3.axisBottom(x));
 
-            var u = svg.selectAll('rect')
+            const u = svg.selectAll('rect')
                 .data(data)
 
-            u
-                .enter()
+            u.enter()
                 .append('rect')
                 .merge(u)
                 .transition()
-                .duration(1000)
+                .duration(transitionTime)
                 .attr('x', d => x(d.key))
                 .attr('y', d => y(d.value))
                 .attr('width', x.bandwidth())
