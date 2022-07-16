@@ -19,16 +19,12 @@
             transform: translate(-50%, 0%);
         }
 
-        .datum {
-            fill: darkcyan;
-        }
-
         .max {
             filter: drop-shadow(0px 0px 15px rgb(142, 242, 255));
         }
 
         #chart text {
-            font-size: xx-large;
+            font-size: x-large;
         }
     </style>
     <link rel='stylesheet' href='style.css'>
@@ -46,7 +42,12 @@
         const pollInterval = 5000;
         const transitionTime = 1000;
 
-        const margin = { top: 30, right: 30, bottom: 150, left: 60 },
+        const colors = {
+            'CHIP': 'purple',
+            'LanCie': 'orange',
+        };
+
+        const margin = { top: 30, right: 30, bottom: 140, left: 60 },
             width = window.innerWidth - margin.left - margin.right,
             height = window.innerHeight - margin.top - margin.bottom;
 
@@ -124,11 +125,21 @@
                 .attr('width', x.bandwidth())
                 .attr('height', d => height - y(d.value))
                 .attr('class', d => {
-                    let clazz = 'datum ' + d.key;
+                    let clazz = '';
                     if (d.value === maxValue) {
                         clazz += ' max';
                     }
-                    return clazz;
+                    return clazz.trim();
+                })
+                .attr('fill', d => {
+                    if (d.value === maxValue) {
+                        return 'rgb(142, 242, 255)';
+                    }
+                    let fill = colors[d.key];
+                    if (fill === undefined) {
+                        fill = 'darkcyan';
+                    }
+                    return fill;
                 });
         }
 
