@@ -4,6 +4,8 @@ The signup process is carried out using Google Forms.
 
 [Demo](https://rawcdn.githack.com/StudieverenigingSTORM/live-committee-signups/9e8381d759407487a50312a835a6bdb3f30b92b0/index.html)
 
+**Note!** Since CORS is annoying, you need to run first close chrome and run it with `chrome --disable-web-security --user-data-dir=<some temp dir>` to get this to work.
+
 # Components
 * Google Apps Script (`api.gs`)
 * Static web frontend (`index.html`)

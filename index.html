@@ -27,7 +27,6 @@
             font-size: x-large;
         }
     </style>
-    <link rel='stylesheet' href='style.css'>
 </head>
 
 <body>
@@ -58,9 +57,15 @@
         function getData() {
             let headers = new Headers();
             headers.append('Cache-Control', 'no-cache');
-            return fetch(apiEndpoint, { headers: headers })
-                .then(res => res.text())
-                .then(JSON.parse)
+            return fetch(apiEndpoint, {
+                headers: headers,
+                redirect: 'follow',
+            })
+                .then(res =>{ return res.text()})
+                .then(text => {
+                    console.log(text);
+                    return JSON.parse(text);
+                })
                 .then(res => {
                     if (res.status !== 'success') {
                         throw new Error(res.error);
