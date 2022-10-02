@@ -2,7 +2,7 @@
 A live display of the number of new members for each committee.
 The signup process is carried out using Google Forms.
 
-[Demo](https://rawcdn.githack.com/StudieverenigingSTORM/live-committee-signups/9e8381d759407487a50312a835a6bdb3f30b92b0/index.html)
+[[Demo](https://raw.githack.com/StudieverenigingSTORM/live-committee-signups/main/index.html)]
 
 ## Components
 * Google Apps Script (`api.gs`)
