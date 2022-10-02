@@ -11,6 +11,7 @@
             margin: 0px;
             overflow: hidden;
             text-align: center;
+            background-image: url('./background.png');
         }
 
         body div {
@@ -20,7 +21,7 @@
         }
 
         .max {
-            filter: drop-shadow(0px 0px 15px rgb(142, 242, 255));
+            filter: drop-shadow(0px 0px 15px rgb(205, 92, 92));
         }
 
         #chart text {
@@ -30,6 +31,7 @@
 </head>
 
 <body>
+    <img src='./background.png' style='position: fixed; top: 0px; left: 0px; width: 100%; height: 100%;'></img>
     <div>
         <h1>Live Committee Signups</h1>
         <div id='chart'></div>
@@ -42,8 +44,8 @@
         const transitionTime = 1000;
 
         const colors = {
-            'CHIP': 'purple',
-            'LanCie': 'orange',
+            // 'CHIP': 'purple',
+            // 'LanCie': 'orange',
         };
 
         const margin = { top: 30, right: 30, bottom: 140, left: 60 },
@@ -62,17 +64,14 @@
                 redirect: 'follow',
             })
                 .then(res =>{ return res.text()})
-                .then(text => {
-                    console.log(text);
-                    return JSON.parse(text);
-                })
+                .then(JSON.parse)
                 .then(res => {
                     if (res.status !== 'success') {
                         throw new Error(res.error);
                     }
                     return res.data;
                 })
-                .then(data => Object.keys(data).map(k => { return { key: k, value: data[k] }; }))
+                .then(data => Object.keys(data).map(k => { return { key: k.split('(')[0], value: data[k] }; }))
                 .then(data => data.sort((a, b) => a.key.localeCompare(b.key)))
                 .catch(err => console.log(err));
         }
@@ -138,14 +137,15 @@
                 })
                 .attr('fill', d => {
                     if (d.value === maxValue) {
-                        return 'rgb(142, 242, 255)';
+                        return 'rgb(205, 92, 92)';
                     }
                     let fill = colors[d.key];
                     if (fill === undefined) {
-                        fill = 'darkcyan';
+                        fill = '#add8e6';
                     }
                     return fill;
-                });
+                })
+                .attr('stroke', 'black');
         }
 
         getData().then(update);
