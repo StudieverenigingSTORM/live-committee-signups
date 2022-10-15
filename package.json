@@ -1,0 +1,21 @@
+{
+  "name": "live-committee-signups",
+  "version": "1.0.0",
+  "description": "A live display of the number of new members for each committee",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StudieverenigingSTORM/live-committee-signups.git"
+  },
+  "license": " GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/StudieverenigingSTORM/live-committee-signups/issues"
+  },
+  "homepage": "https://github.com/StudieverenigingSTORM/live-committee-signups#readme",
+  "devDependencies": {
+    "electron": "^21.1.1"
+  }
+}

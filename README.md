@@ -6,9 +6,7 @@ The signup process is carried out using Google Forms.
 
 ## Components
 * Google Apps Script (`api.gs`)
-* Static web frontend (`index.html`)  
-**Note!** Since CORS is annoying, you need to run first close chrome and run it with `chrome --disable-web-security --user-data-dir=<some temp dir>` to get this to work.
-* **Alternative:** Python 3 app (`app.py`, dependencies are installed with `pip install -r requirements.txt`)
+* Frontend Electron app (run with `npm start`)  
 
 ## Local Testing  
 Run a local static HTTP server using `python3 -m http.server 8080`.
