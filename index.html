@@ -44,7 +44,7 @@
         const transitionTime = 1000;
 
         const colors = {
-            // 'CHIP': 'purple',
+            'CHIP': 'purple',
             // 'LanCie': 'orange',
         };
 
@@ -129,17 +129,17 @@
                 .attr('width', x.bandwidth())
                 .attr('height', d => height - y(d.value))
                 .attr('class', d => {
-                    let clazz = '';
                     if (d.value === maxValue) {
-                        clazz += ' max';
+                        return 'max';
                     }
-                    return clazz.trim();
+                    return '';
                 })
                 .attr('fill', d => {
                     if (d.value === maxValue) {
                         return 'rgb(205, 92, 92)';
                     }
-                    let fill = colors[d.key];
+                    let fill = colors[d.key.trim()];
+                    console.log(d.key);
                     if (fill === undefined) {
                         fill = '#add8e6';
                     }
